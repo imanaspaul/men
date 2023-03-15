@@ -20,17 +20,25 @@
 import TurndownService from "turndown";
 
 const atValues = [
-  { id: 1, value: "Fredrik Sundqvist", avatar: "https://i.pravatar.cc/300" },
-  { id: 2, value: "Patrik Sjölin", avatar: "https://i.pravatar.cc/300" },
+  { id: 1, value: "Atanu Mondal", avatar: "https://i.pravatar.cc/300" },
+  { id: 2, value: "Manjarul Hq", avatar: "https://i.pravatar.cc/300" },
+  { id: 3, value: "Manas Paul", avatar: "https://i.pravatar.cc/300" },
+  { id: 4, value: "Vishal J", avatar: "https://i.pravatar.cc/300" },
 ];
 
 const hashValues = [
-  { id: 3, value: "Fredrik Sundqvist 2" },
-  { id: 4, value: "Patrik Sjölin 2" },
+  { id: 3, value: "Fredrik" },
+  { id: 4, value: "Patrik" },
 ];
 
 export default {
   name: "quill-example-nuxt",
+  props: {
+    sms: {
+      type: String,
+      default: "",
+    },
+  },
   data() {
     return {
       content: ``,
@@ -42,7 +50,7 @@ export default {
           toolbar: false,
           mention: {
             allowedChars: /^[A-Za-z\sÅÄÖåäö]*$/,
-            mentionDenotationChars: ["@", "#"],
+            mentionDenotationChars: ["@"],
             source: function (searchTerm, renderList, mentionChar) {
               let values;
 
@@ -91,6 +99,16 @@ export default {
       selectedMentions: {},
     };
   },
+  watch: {
+    sms: {
+      immediate: true,
+      handler(val) {
+        if (val && val !== "") {
+          this.content = val;
+        }
+      },
+    },
+  },
   mounted() {
     setTimeout(() => {
       // this.$refs.editor.quill.on("editor-change", this.handleTextChange);
@@ -122,7 +140,10 @@ export default {
     convertMarkdown(html, mentions) {
       const turndownService = new TurndownService();
       const markdown = turndownService.turndown(html);
-      let replacedHtmlString = markdown;
+      let replacedHtmlString = markdown
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;");
       mentions.forEach((mention) => {
         const regex = new RegExp(`@${mention.name}`, "g");
         replacedHtmlString = replacedHtmlString.replace(
@@ -224,6 +245,7 @@ export default {
 .usercard {
   display: flex;
   align-items: center;
+  gap: 1rem;
 }
 .ql-mention-list-item.disabled {
   cursor: auto;
