@@ -24,7 +24,7 @@ export default {
 <style>
 .container {
   width: 30%;
-  height: 90vh;
+  height: 99vh;
   margin: 0 auto;
   position: relative;
 }

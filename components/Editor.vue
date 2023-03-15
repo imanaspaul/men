@@ -93,6 +93,15 @@ export default {
             onSelect: function (item, insertItem) {
               insertItem(item);
             },
+            bounds: function () {
+              var editorRect = this.quill.container.getBoundingClientRect();
+              return {
+                left: editorRect.left,
+                right: editorRect.right,
+                top: -200, // set the top position to -200px
+                bottom: editorRect.bottom - 100,
+              };
+            },
           },
         },
       },
